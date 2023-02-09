@@ -1,6 +1,8 @@
 
 const question = document.getElementById('pertanyaan')
 const answer = document.getElementById('jawaban')
+const loaders = document.getElementById('loaders')
+const container = document.getElementsByClassName('container')
 
 let init = 0
 
@@ -11,7 +13,7 @@ const botQuest = (data) => {
         `Halo ${data?.nama} , kamu berapa usianya?`,
         `Oh kamu  ${data?.usia} tahun , kamu apa hobinya ? `,
         `Jadi hobimu ${data?.hobi} , kalo boleh tau udah punya cewe apa belom ?`,
-        `Oh.. ${data?.pacar}, kalo gitu gw cabut dulua yak...`
+        `Oh.. ${data?.pacar}, kalo gitu gw cabut duluan yak...`
     ]
 }
 
@@ -20,6 +22,7 @@ question.innerHTML = botQuest()[0]
 let usersData = []
 
 function botStart() {
+    if (answer.value.length < 1) return alert("Janganlah biarkan dia kosong! ")
     init++
     if (init === 1) {
         botDelay({ nama: answer.value })
@@ -38,9 +41,14 @@ function botStart() {
 }
 
 function botDelay(jawabanUser) {
+    loaders.style.display = "block"
+    container[0].style.filter = "blur(8px)"
     setTimeout(() => {
         question.innerHTML = botQuest(jawabanUser)[init]
         answer.value = ""
+        loaders.style.display = "none"
+        container[0].style.filter = "none"
+
     }, [1250]);
 
     usersData.push(answer.value)
@@ -52,5 +60,6 @@ function finishing() {
 }
 
 function botEnd() {
+    alert(`Terima kasih ${usersData[0]} sudah bermain, sampai jumpa aku akan melupakanmu dan bertemu orang baru`)
     window.location.reload()
 }
